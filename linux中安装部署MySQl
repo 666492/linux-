@@ -1,0 +1,45 @@
+MySQl
+使用root用户安装
+su - root（进入root用户）
+查看是否下载mysql：
+rpm -qa | grep mysql
+使用的是Ubuntu系统，默认最好直接采用mysql8.0
+Centos系统下载mysql5.7需要配置yum仓库（导入mysql yum仓库密钥-安装其仓库）
+apt update
+apt install -y mysql-server
+
+查看mysql状态：
+systemctl status mysql
+
+检查版本：mysql --version
+进入mysql：mysql
+启动服务和设置开机自启动：
+systemctl start mysql
+systemctl enable mysql
+获取初始密码：(centos)
+grep ‘temporary password’ /var/log/mysqld.log
+安装后再做一次安全初始化：
+mysql_secure_installation
+登录mysql：
+mysql -u root
+设置密码：
+AlTER USER 'root'@'localhost' IDENTIFIED BY '123456';
+配置远程登录：
+CREATE USER 'root'@'%' IDENTIFIED BY 'Mysql_2026@Root!';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+退出mysql：exit
+修改MySQL监听地址：
+nano /etc/mysql/mysql.conf.d/mysqld.cnf
+进入后修改为bind-address = 0.0.0.0
+重启mysql：
+systemctl restart mysql
+
+开放3306端口：
+ufw allow 3306/tcp
+ufw reload
+ufw status
+检查是否成功监听：
+ss -lntp | grep 3306
+设置navicat远程连接Ubuntu的mysql8.0
+
