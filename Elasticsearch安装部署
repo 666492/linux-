@@ -1,0 +1,61 @@
+Elasticsearch：开源全文搜索引擎，用于快速存储、搜索和分析海量数据。
+
+1.安装基础依赖：
+apt update
+apt install -y wget gnupg ca-certificates apt-transport-https
+使用wget下载Elasticsearch安装包
+2.下载Elasticsearch安装包：
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.14.3-amd64.deb
+下载完成后当前目录下会出现：
+elasticsearch-8.14.3-amd64.deb
+3.安装Elasticsearch：
+dpkg -i elasticsearch-8.14.3-amd64.deb
+安装过程中会创建：
+elasticsearch 用户
+elasticsearch 用户组
+Elasticsearch 配置目录
+Elasticsearch systemd 服务
+安装完成后，终端会输出默认超级用户密码：
+用户名：elastic
+密码：RO7W*f8PgEAwBZ1vHabW
+如果忘记密码，可以重置：
+/usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
+4.修改Elasticsearch配置：
+编辑配置文件：
+nano /etc/elasticsearch/elasticsearch.yml
+在文本末尾添加确认一下配置：
+cluster.name: my-es
+node.name: node-1
+network.host: 0.0.0.0#
+http.port: 9200
+discovery.type: single-node
+说明：
+network.host: 0.0.0.0 表示允许外部访问
+http.port: 9200 表示 Elasticsearch 默认访问端口
+discovery.type: single-node 表示单节点模式
+5.启动Elasticsearch：
+重新加载 systemd：
+systemctl daemon-reload
+启动服务：
+systemctl start elasticsearch.service
+设置开机自启：
+systemctl enable elasticsearch.service
+查看运行状态：
+systemctl status elasticsearch.service
+
+6.防火墙放行9200端口：
+查看防火墙状态：
+ufw status
+执行：
+ufw allow 9200/tcp
+ufw reload
+7.访问测试：
+Elasticsearch 8 默认启用了 HTTPS 和账号密码认证。
+使用命令测试：
+wget --no-check-certificate --user=elastic --password='你的elastic密码' -qO- https://localhost:9200
+wget --no-check-certificate --user=elastic --password='RO7W*f8PgEAwBZ1vHabW' -qO- https://localhost:9200
+浏览器访问：
+https://192.168.113.132:9200
+登录信息：
+用户名：elastic
+密码：RO7W*f8PgEAwBZ1vHabW
