@@ -1,0 +1,50 @@
+Java wab应用的容器化部署
+Tomcat 对java程序运行的支撑
+前置条件：安装依赖JDK、版本选择
+
+1.安装jdk：
+apt update
+apt install -y openjdk-11-jdk
+检查java版本：
+java -version
+2.配置java环境变量：
+检查：echo $JAVA_HOME
+没有输出则手动配置：readlink -f $(which java)
+输出：/usr/lib/jvm/java-11-openjdk-amd64/bin/java
+则JAVA_HOME就是：/usr/lib/jvm/java-11-openjdk-amd64
+编辑环境变量：
+nano /etc/profile
+末尾添加：
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+生效：
+source /etc/profile
+检查：echo $JAVA_HOME
+输出结果为：/usr/lib/jvm/java-11-openjdk-amd64/bin/java则正确
+3.安装Tomcat：
+apt install -y tomcat9 tomcat9-admin
+4.启动和管理Tomcat：
+systemctl start tomcat9
+systemctl enable tomcat9
+systemctl status tomcat9
+5.配置防火墙，放行8080：
+ufw allow 8080/tcp
+ufw reload
+ufw status
+6.查看服务状态：
+ss -ntpl
+
+7.访问验证：
+http://192.168.113.132:8080
+8.配置Tomcat管理后台账号：
+nano /etc/tomcat9/tomcat-users.xml
+找到最下面的</tomcat-users>
+在其前面添加：
+<role rolename="manager-gui"/>
+<role rolename="admin-gui"/>
+<user username="admin" password="Tomcat_2026@Admin!" roles="manager-gui,admin-gui"/>
+9.重启Tomcat：
+systemctl restart tomcat9
+10.登录：
+用户名：admin
+密码：Tomcat_2026@Admin!
