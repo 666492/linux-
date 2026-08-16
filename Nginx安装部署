@@ -1,0 +1,41 @@
+Nginx是高性能的HTTP和反向代理Web服务器，同时也提供IMAP/POP3/SMTP服务
+
+1.更新软件源：
+apt update
+2.安装Nginx：
+apt install -y nginx
+3.出现了一些问题：
+APT软件包索引旧了/软件源不一致
+修复软件源：
+nano /etc/apt/sources.list
+进入文件，把里面内容替换成：
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-updates main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-backports main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-security main restricted universe multiverse
+然后执行：
+apt clean
+apt update
+apt install -y nginx
+
+安装成功
+查看版本：
+nginx -v
+输出：nginx version: nginx/1.18.0 (Ubuntu)
+4.启动与管理Nginx：
+systemctl start nginx
+systemctl enable nginx
+systemctl status nginx
+
+5.配置防火墙：
+ufw allow 80/tcp（永久放行80端口）
+ufw reload
+ufw status
+还要以后配置HTTPS，再放行443：
+ufw allow 443/tcp
+ufw reload
+查看是否监听：
+ss -lntp | grep 
+
+6.访问验证：
+http://192.168.113.132
