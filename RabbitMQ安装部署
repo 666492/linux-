@@ -1,0 +1,28 @@
+RabbitMQ开源消息队列系统，提供消息发布、订阅、点对点传输等服务
+
+1.更新软件源：
+apt update
+2.安装Rabbitmq：
+apt install -y rabbitmq-server
+3.启动并管理RabbitMQ:
+systemctl start rabbitmq-server
+systemctl enable --now rabbitmq-server
+systemctl status rabbitmq-server
+4.开启web管理后台：
+rabbitmq-plugins enable rabbitmq_management
+systemctl restart rabbitmq-server
+RabbitMQ管理后台默认端口：15672
+         消息服务端口：5672
+5.创建远程登录用户：
+rabbitmqctl add_user admin 'RabbitMQ_2026@Admin!'
+rabbitmqctl set_user_tags admin administrator
+rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
+用户名：admin
+密码：RabbitMQ_2026@Admin!
+6.放行防火墙端口：
+ufw allow 5672/tcp
+ufw allow 15672/tcp
+ufw reload
+ufw status
+7.访问验证：
+http://192.168.113.132:15672
