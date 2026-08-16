@@ -1,0 +1,50 @@
+Redis：开源、c语言编写、支持网络、可持久化的Key-Value数据库
+
+1.更新软件源：
+apt update
+2.安装Redis：
+apt install -y redis-server
+查看版本：
+redis-server --version
+
+3.启动与管理Redis：
+systemctl start redis-server
+systemctl enable redis-server
+systemctl status redis-server
+
+4.配置远程访问和密码：
+编辑配置文件：
+nano /etc/redis/redis.conf
+找到：
+bind 127.0.0.1 -::1
+改成：
+bind 0.0.0.0
+继续找到：
+protected-mode yes
+可以保持yes，但是要配置密码
+找到这行：
+# requirepass foobared
+改成：
+requirepass Redis_2026@Admin!
+重启Redis：
+systemctl restart redis-server
+5.放行Redis端口：
+Redis默认端口：6379
+ufw allow 6379/tcp
+ufw reload
+ufw status
+
+6.访问验证：
+
+本机验证：
+redis-cli
+进入后执行：
+AUTH Redis_2026@Admin!
+PING
+输出PONG说明成功
+7.远程连接：
+redis-cli -h 192.168.113.132 -p 6379 -a 'Redis_2026@Admin!'
+测试端口监听：
+ss -lntp | grep 6379
+
+Redis登录密码：Redis_2026@Admin!
